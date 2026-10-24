@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Night Vision Service</title>
+<meta name="description" content="Night Vision Service – autószerviz és digitális szervizkönyv: autóid, szerviztörténet, időpontfoglalás és a javítás állapota egy helyen.">
+<meta name="theme-color" content="#0f121c">
+<meta property="og:title" content="Night Vision Service">
+<meta property="og:description" content="Autószerviz és digitális szervizkönyv egy alkalmazásban.">
+<meta property="og:image" content="assets/icon-512.png">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--bg:#0f121c;--bg2:#151a28;--card:#1a2032;--line:#ffffff17;--text:#eef2f8;--muted:#a3adc2;--accent:#3ee26a;--accent2:#22b84b;--warn:#f0b94b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{width:min(1120px,100% - 32px);margin-inline:auto}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:12px;height:64px}
+header.top img{height:40px;width:auto;border-radius:6px}
+header.top nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--muted);font:600 12px/1 inherit;padding:8px 10px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:#06210f}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#06210f;box-shadow:0 8px 28px #3ee26a33}
+.btn-primary:hover{background:#5cf084}
+.btn-ghost{border-color:var(--line);background:#ffffff08}
+.btn-ghost:hover{background:#ffffff12}
+.btn-sm{padding:9px 14px;font-size:14px}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero::before{content:"";position:absolute;inset:0;background:url(assets/hero.jpg) center/cover no-repeat;opacity:.28;filter:saturate(.7)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0f121c55 0%,#0f121cdd 70%,var(--bg) 100%)}
+.hero .wrap{position:relative;z-index:1;padding:72px 0 64px;display:grid;gap:28px}
+.badge{display:inline-block;width:max-content;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--accent);border:1px solid #3ee26a55;background:#3ee26a12;padding:6px 10px;border-radius:999px}
+h1{font-size:clamp(32px,6vw,58px);line-height:1.06;letter-spacing:-.8px;max-width:15ch}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:clamp(16px,2.2vw,19px);color:var(--muted);max-width:56ch}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.hint{font-size:13px;color:var(--muted)}
+section{padding:64px 0}
+h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.4px;margin-bottom:8px}
+.sub{color:var(--muted);margin-bottom:28px;max-width:60ch}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#3ee26a18;color:var(--accent);margin-bottom:12px}
+.card h3{font-size:17px;margin-bottom:6px}
+.card p{color:var(--muted);font-size:14.5px}
+.steps{counter-reset:s;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.step{position:relative;padding:20px 20px 20px 64px;background:var(--bg2);border:1px solid var(--line);border-radius:16px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:18px;top:18px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#06210f;font-weight:800}
+.step h3{font-size:16px;margin-bottom:4px}.step p{color:var(--muted);font-size:14px}
+.split{display:grid;gap:24px;grid-template-columns:1.1fr .9fr;align-items:center}
+.panel{background:linear-gradient(160deg,#1c2436,#141a28);border:1px solid var(--line);border-radius:20px;padding:28px}
+.panel ul{list-style:none;display:grid;gap:10px;margin:16px 0 22px}
+.panel li{display:flex;gap:10px;color:var(--muted)}
+.panel li::before{content:"✓";color:var(--accent);font-weight:800}
+.dl{display:grid;gap:12px}
+.dl .row{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.dl .row b{display:block}.dl .row small{color:var(--muted)}
+.dl .row .btn{margin-left:auto}
+.soon{opacity:.6}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+@media (max-width:820px){.split{grid-template-columns:1fr}.hide-sm{display:none}.dl .row{flex-wrap:wrap}.dl .row .btn{margin-left:0;width:100%}}
+@media (max-width:380px){header.top .wrap{gap:8px}header.top img{height:34px}.lang button{padding:7px 8px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a href="#" aria-label="Night Vision Service"><img src="assets/logo-banner.jpg" alt="Night Vision Service" width="112" height="40"></a>
+ <nav>
+  <div class="lang" role="group" aria-label="Nyelv">
+   <button type="button" data-lang="hu" aria-pressed="true">HU</button><button type="button" data-lang="ro" aria-pressed="false">RO</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <a class="btn btn-primary btn-sm hide-sm" href="app/" data-i18n="login">Belépés</a>
+ </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+ <span class="badge" data-i18n="badge">Autószerviz · digitális szervizkönyv</span>
+ <h1 data-i18n-html="title">Az autód minden adata <em>egy helyen</em>.</h1>
+ <p class="lead" data-i18n="lead">Szerviztörténet, időpontfoglalás, a javítás állapota élőben és emlékeztető a lejáró ITP-re és biztosításra – telefonon és böngészőben is.</p>
+ <div class="cta">
+  <a class="btn btn-primary" href="app/" data-i18n="open">Webes app megnyitása</a>
+  <a class="btn btn-ghost" href="#letoltes" data-i18n="download">Android app letöltése</a>
+ </div>
+ <p class="hint" data-i18n="hint">Ugyanaz a fiók működik a telefonos appban és a weben.</p>
+</div></section>
+
+<section id="funkciok"><div class="wrap">
+ <h2 data-i18n="featTitle">Mit kapsz az appban?</h2>
+ <p class="sub" data-i18n="featSub">Ügyfeleknek és a műhelynek egyaránt – minden adat valós időben szinkronizál.</p>
+ <div class="grid">
+  <div class="card"><div class="ic">🚗</div><h3 data-i18n="f1t">Autóid és szerviztörténet</h3><p data-i18n="f1p">Minden javítás, alkatrész és fotó visszakereshetően, autónként.</p></div>
+  <div class="card"><div class="ic">📅</div><h3 data-i18n="f2t">Időpontfoglalás</h3><p data-i18n="f2p">Foglalj időpontot a műhelybe, és kapj visszaigazolást az appban.</p></div>
+  <div class="card"><div class="ic">🔧</div><h3 data-i18n="f3t">Javítás állapota élőben</h3><p data-i18n="f3p">Lásd, hol tart az autód: átvétel, diagnosztika, javítás, átadás.</p></div>
+  <div class="card"><div class="ic">🔔</div><h3 data-i18n="f4t">Lejárati emlékeztetők</h3><p data-i18n="f4p">ITP, biztosítás, rovinieta és szerviz – időben szólunk.</p></div>
+  <div class="card"><div class="ic">💬</div><h3 data-i18n="f5t">Üzenet a szerviznek</h3><p data-i18n="f5p">Kérdezz közvetlenül az appból, fotóval együtt.</p></div>
+  <div class="card"><div class="ic">🏷️</div><h3 data-i18n="f6t">Piactér</h3><p data-i18n="f6p">Eladnád az autód? Hirdesd ellenőrzött szerviztörténettel.</p></div>
+ </div>
+</div></section>
+
+<section style="background:var(--bg2);border-block:1px solid var(--line)"><div class="wrap">
+ <h2 data-i18n="howTitle">Így kezdheted el</h2>
+ <p class="sub" data-i18n="howSub">Pár perc az egész.</p>
+ <div class="steps">
+  <div class="step"><h3 data-i18n="s1t">Regisztrálj</h3><p data-i18n="s1p">E-mail címmel, a weben vagy a telefonos appban.</p></div>
+  <div class="step"><h3 data-i18n="s2t">Add hozzá az autód</h3><p data-i18n="s2p">Rendszám és pár adat – a telefonos appban a forgalmi fotójából is.</p></div>
+  <div class="step"><h3 data-i18n="s3t">Foglalj időpontot</h3><p data-i18n="s3p">Utána mindent látsz: állapot, számla, szerviztörténet.</p></div>
+ </div>
+</div></section>
+
+<section id="letoltes"><div class="wrap split">
+ <div>
+  <h2 data-i18n="dlTitle">Telefonon és böngészőben</h2>
+  <p class="sub" data-i18n="dlSub">Használd a webes appot bármilyen gépről, vagy telepítsd az Android appot – az adataid mindkettőben ugyanazok.</p>
+  <div class="dl">
+   <div class="row"><span style="font-size:26px">🌐</span><span><b data-i18n="webT">Webes app</b><small data-i18n="webP">Böngészőből, telepítés nélkül</small></span><a class="btn btn-primary btn-sm" href="app/" data-i18n="openShort">Megnyitás</a></div>
+   <div class="row"><span style="font-size:26px">🤖</span><span><b>Android</b><small data-apk-version data-i18n="apkP">Legfrissebb verzió</small></span><a class="btn btn-ghost btn-sm" data-apk-link href="https://github.com/vadzsolty-cloud/nvs-app-letoltes/releases/latest" data-i18n="get">Letöltés</a></div>
+   <div class="row soon"><span style="font-size:26px"></span><span><b>iPhone</b><small data-i18n="soon">Hamarosan</small></span></div>
+  </div>
+ </div>
+ <div class="panel">
+  <h3 style="font-size:20px" data-i18n="shopT">Műhelyeknek</h3>
+  <ul>
+   <li data-i18n="sh1">Munkalapok, emelők és szerelők egy képernyőn</li>
+   <li data-i18n="sh2">Naptár, foglalások és kapacitás</li>
+   <li data-i18n="sh3">Raktár, statisztika és adminisztráció</li>
+   <li data-i18n="sh4">Ügyfél-értesítések automatikusan</li>
+  </ul>
+  <a class="btn btn-ghost" href="app/" data-i18n="shopBtn">Belépés a műhelyfelületre</a>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <span>© <span data-year></span> Night Vision Service</span>
+ <a href="https://www.facebook.com/share/19M8M5o6KM/" target="_blank" rel="noopener" data-i18n="fb">Facebook-oldalunk</a>
+</div></footer>
+
+<script>
+(function(){
+ var T={
+  hu:{login:'Belépés',badge:'Autószerviz · digitális szervizkönyv',title:'Az autód minden adata <em>egy helyen</em>.',lead:'Szerviztörténet, időpontfoglalás, a javítás állapota élőben és emlékeztető a lejáró ITP-re és biztosításra – telefonon és böngészőben is.',open:'Webes app megnyitása',download:'Android app letöltése',hint:'Ugyanaz a fiók működik a telefonos appban és a weben.',featTitle:'Mit kapsz az appban?',featSub:'Ügyfeleknek és a műhelynek egyaránt – minden adat valós időben szinkronizál.',f1t:'Autóid és szerviztörténet',f1p:'Minden javítás, alkatrész és fotó visszakereshetően, autónként.',f2t:'Időpontfoglalás',f2p:'Foglalj időpontot a műhelybe, és kapj visszaigazolást az appban.',f3t:'Javítás állapota élőben',f3p:'Lásd, hol tart az autód: átvétel, diagnosztika, javítás, átadás.',f4t:'Lejárati emlékeztetők',f4p:'ITP, biztosítás, rovinieta és szerviz – időben szólunk.',f5t:'Üzenet a szerviznek',f5p:'Kérdezz közvetlenül az appból, fotóval együtt.',f6t:'Piactér',f6p:'Eladnád az autód? Hirdesd ellenőrzött szerviztörténettel.',howTitle:'Így kezdheted el',howSub:'Pár perc az egész.',s1t:'Regisztrálj',s1p:'E-mail címmel, a weben vagy a telefonos appban.',s2t:'Add hozzá az autód',s2p:'Rendszám és pár adat – a telefonos appban a forgalmi fotójából is.',s3t:'Foglalj időpontot',s3p:'Utána mindent látsz: állapot, számla, szerviztörténet.',dlTitle:'Telefonon és böngészőben',dlSub:'Használd a webes appot bármilyen gépről, vagy telepítsd az Android appot – az adataid mindkettőben ugyanazok.',webT:'Webes app',webP:'Böngészőből, telepítés nélkül',openShort:'Megnyitás',apkP:'Legfrissebb verzió',get:'Letöltés',soon:'Hamarosan',shopT:'Műhelyeknek',sh1:'Munkalapok, emelők és szerelők egy képernyőn',sh2:'Naptár, foglalások és kapacitás',sh3:'Raktár, statisztika és adminisztráció',sh4:'Ügyfél-értesítések automatikusan',shopBtn:'Belépés a műhelyfelületre',fb:'Facebook-oldalunk',version:'Verzió'},
+  ro:{login:'Autentificare',badge:'Service auto · carte de service digitală',title:'Toate datele mașinii tale <em>într-un singur loc</em>.',lead:'Istoric service, programări, stadiul reparației în timp real și memento pentru ITP și asigurare – pe telefon și în browser.',open:'Deschide aplicația web',download:'Descarcă aplicația Android',hint:'Același cont funcționează în aplicația de telefon și pe web.',featTitle:'Ce primești în aplicație?',featSub:'Pentru clienți și pentru atelier – toate datele se sincronizează în timp real.',f1t:'Mașinile tale și istoricul service',f1p:'Fiecare reparație, piesă și fotografie, pe mașină.',f2t:'Programări',f2p:'Programează-te la atelier și primești confirmarea în aplicație.',f3t:'Stadiul reparației în timp real',f3p:'Vezi unde se află mașina: primire, diagnoză, reparație, predare.',f4t:'Memento expirări',f4p:'ITP, asigurare, rovinietă și service – te anunțăm la timp.',f5t:'Mesaj către service',f5p:'Întreabă direct din aplicație, cu fotografie.',f6t:'Piață auto',f6p:'Vinzi mașina? Publică anunțul cu istoric service verificat.',howTitle:'Cum începi',howSub:'Durează doar câteva minute.',s1t:'Înregistrează-te',s1p:'Cu e-mail, pe web sau în aplicația de telefon.',s2t:'Adaugă mașina',s2p:'Număr și câteva date – în aplicația de telefon și din poza talonului.',s3t:'Fă o programare',s3p:'Apoi vezi totul: stadiu, factură, istoric.',dlTitle:'Pe telefon și în browser',dlSub:'Folosește aplicația web de pe orice calculator sau instalează aplicația Android – datele sunt aceleași.',webT:'Aplicația web',webP:'Din browser, fără instalare',openShort:'Deschide',apkP:'Ultima versiune',get:'Descarcă',soon:'În curând',shopT:'Pentru ateliere',sh1:'Fișe de lucru, elevatoare și mecanici pe un ecran',sh2:'Calendar, programări și capacitate',sh3:'Stoc, statistici și administrare',sh4:'Notificări automate pentru clienți',shopBtn:'Intră în interfața atelierului',fb:'Pagina noastră de Facebook',version:'Versiunea'},
+  en:{login:'Sign in',badge:'Car service · digital service book',title:'Everything about your car <em>in one place</em>.',lead:'Service history, bookings, live repair status and reminders for inspection and insurance – on your phone and in the browser.',open:'Open the web app',download:'Download the Android app',hint:'The same account works in the phone app and on the web.',featTitle:'What you get',featSub:'For customers and for the workshop – everything syncs in real time.',f1t:'Your cars and service history',f1p:'Every repair, part and photo, per car.',f2t:'Bookings',f2p:'Book the workshop and get the confirmation in the app.',f3t:'Live repair status',f3p:'See where your car is: received, diagnosis, repair, handover.',f4t:'Expiry reminders',f4p:'Inspection, insurance, road tax and service – reminded in time.',f5t:'Message the workshop',f5p:'Ask straight from the app, with a photo.',f6t:'Marketplace',f6p:'Selling your car? List it with a verified service history.',howTitle:'Getting started',howSub:'It only takes a few minutes.',s1t:'Sign up',s1p:'With your e-mail, on the web or in the phone app.',s2t:'Add your car',s2p:'Plate and a few details – in the phone app also from a photo of the registration.',s3t:'Book a visit',s3p:'Then you see everything: status, invoice, history.',dlTitle:'On your phone and in the browser',dlSub:'Use the web app from any computer, or install the Android app – your data is the same in both.',webT:'Web app',webP:'In the browser, nothing to install',openShort:'Open',apkP:'Latest version',get:'Download',soon:'Coming soon',shopT:'For workshops',sh1:'Work orders, lifts and mechanics on one screen',sh2:'Calendar, bookings and capacity',sh3:'Stock, statistics and administration',sh4:'Automatic customer notifications',shopBtn:'Sign in to the workshop view',fb:'Our Facebook page',version:'Version'}};
+ var KEY='nvs.site.lang',cur='hu',apk=null;
+ function pick(){try{var s=localStorage.getItem(KEY);if(T[s])return s;}catch(e){}var n=(navigator.language||'').slice(0,2);return T[n]?n:'hu';}
+ function apply(l){cur=l;var t=T[l];document.documentElement.lang=l;
+  document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(t[k]!=null)e.textContent=t[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(function(e){var k=e.getAttribute('data-i18n-html');if(t[k]!=null)e.innerHTML=t[k];});
+  document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-lang')===l));});
+  if(apk){var v=document.querySelector('[data-apk-version]');if(v)v.textContent=t.version+' '+apk.version;}
+  try{localStorage.setItem(KEY,l);}catch(e){}}
+ document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){apply(b.getAttribute('data-lang'));});});
+ document.querySelector('[data-year]').textContent=new Date().getFullYear();
+ apply(pick());
+ // Latest public Android release, same channel the in-app updater uses.
+ fetch('https://api.github.com/repos/vadzsolty-cloud/nvs-app-letoltes/releases?per_page=10',{headers:{Accept:'application/vnd.github+json'}}).then(function(r){return r.ok?r.json():[];}).then(function(list){
+  var best=null;(list||[]).forEach(function(x){var m=/^apk-v(\d+\.\d+\.\d+)-run\d+$/.exec(x.tag_name||'');if(!m||x.draft||x.prerelease)return;var a=(x.assets||[]).find(function(v){return v.name==='NightVisionService-v'+m[1]+'.apk';});if(!a)return;
+   var p=m[1].split('.').map(Number);if(!best||p[0]>best.p[0]||(p[0]===best.p[0]&&(p[1]>best.p[1]||(p[1]===best.p[1]&&p[2]>best.p[2]))))best={p:p,version:m[1],url:a.browser_download_url};});
+  if(best){apk=best;var l=document.querySelector('[data-apk-link]');l.href=best.url;apply(cur);}
+ }).catch(function(){});
+})();
+</script>
+</body>
+</html>
